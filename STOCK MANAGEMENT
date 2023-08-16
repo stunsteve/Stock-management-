@@ -1,0 +1,107 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+class Product {
+public:
+    std::string name;
+    int quantity;
+    double price;
+
+    Product(const std::string &productName, int productQuantity, double productPrice)
+        : name(productName), quantity(productQuantity), price(productPrice) {}
+};
+
+class StockManagementSystem {
+private:
+    std::vector<Product> products;
+
+public:
+    void addProduct(const std::string &productName, int quantity, double price) {
+        products.push_back(Product(productName, quantity, price));
+        std::cout << "Product added successfully.\n";
+    }
+
+    void deleteProduct(const std::string &productName) {
+        for (auto it = products.begin(); it != products.end(); ++it) {
+            if (it->name == productName) {
+                products.erase(it);
+                std::cout << "Product deleted successfully.\n";
+                return;
+            }
+        }
+        std::cout << "Product not found.\n";
+    }
+
+    void modifyProduct(const std::string &productName, int newQuantity, double newPrice) {
+        for (auto &product : products) {
+            if (product.name == productName) {
+                product.quantity = newQuantity;
+                product.price = newPrice;
+                std::cout << "Product modified successfully.\n";
+                return;
+            }
+        }
+        std::cout << "Product not found.\n";
+    }
+
+    void listProducts() {
+        std::cout << "Current products in stock:\n";
+        for (const auto &product : products) {
+            std::cout << "Product: " << product.name << ", Quantity: " << product.quantity
+                      << ", Price: $" << product.price << "\n";
+        }
+    }
+};
+
+int main() {
+    StockManagementSystem stockSystem;
+
+    while (true) {
+        std::cout << "1. Add Product\n";
+        std::cout << "2. Delete Product\n";
+        std::cout << "3. Modify Product\n";
+        std::cout << "4. List Products\n";
+        std::cout << "5. Quit\n";
+        int choice;
+        std::cin >> choice;
+
+        if (choice == 1) {
+            std::string name;
+            int quantity;
+            double price;
+            std::cout << "Enter product name: ";
+            std::cin >> name;
+            std::cout << "Enter quantity: ";
+            std::cin >> quantity;
+            std::cout << "Enter price: $";
+            std::cin >> price;
+            stockSystem.addProduct(name, quantity, price);
+        } else if (choice == 2) {
+            std::string name;
+            std::cout << "Enter product name to delete: ";
+            std::cin >> name;
+            stockSystem.deleteProduct(name);
+        } else if (choice == 3) {
+            std::string name;
+            int newQuantity;
+            double newPrice;
+            std::cout << "Enter product name to modify: ";
+            std::cin >> name;
+            std::cout << "Enter new quantity: ";
+            std::cin >> newQuantity;
+            std::cout << "Enter new price: $";
+            std::cin >> newPrice;
+            stockSystem.modifyProduct(name, newQuantity, newPrice);
+        } else if (choice == 4) {
+            stockSystem.listProducts();
+        } else if (choice == 5) {
+            break;
+        } else {
+            std::cout << "Invalid choice. Please try again.\n";
+        }
+    }
+
+    return 0;
+}
+    
